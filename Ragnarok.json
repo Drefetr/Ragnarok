@@ -1,0 +1,12 @@
+{
+  "MaxClusterSize": 5,
+  "MaxLaunchAngle": 0.5,
+  "MaxLaunchHeight": 0.5,
+  "MaxLaunchVelocity": 100.0,
+  "MeteorFrequency": 5,
+  "MinLaunchAngle": 0.25,
+  "MinLaunchHeight": 100.0,
+  "MinLaunchVelocity": 25.0,
+  "SpawnResourceNodePercent": 1.0,
+  "SpawnResourcePercent": 0.05
+}
