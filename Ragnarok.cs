@@ -17,7 +17,7 @@ using Oxide.Core.Plugins;
  */
 namespace Oxide.Plugins
 {
-    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.1", ResourceId = 0)]
+    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.3", ResourceId = 0)]
     public class Ragnarok : RustPlugin
     {			
 		/**
@@ -53,8 +53,9 @@ namespace Oxide.Plugins
 	
 		/**
 		 * Maximum launch velocity (m/s^-1).
+		 * Suggested sensible maximum: 75.0f.
 		 */
-		private float maxLaunchVelocity = 100.0f;
+		private float maxLaunchVelocity = 75.0f;
 
 		/**
 		 * ServerTicks between Meteor(s).
@@ -64,7 +65,7 @@ namespace Oxide.Plugins
 		/**
 		 * Maximum number of Meteors per cluster.
 		 */
-		private int maxClusterSize = 5;		
+		private int maxClusterSize = 1;		
 		
 		/**
 		 * Percent chance of the Meteor dropping loose resources at the point of impact.
@@ -134,8 +135,12 @@ namespace Oxide.Plugins
 				Vector3 location = this.getRandomMapPosition();
 				int clusterSize = UnityEngine.Random.Range(1, this.maxClusterSize);
 			
-				for (int i = 0; i < clusterSize; i++) {
+				for (int i = 0; i < clusterSize; i++) {	
 					float r = UnityEngine.Random.Range(0.0f, 100.0f);
+					
+					// Add a (slight) degree of randomness to the launch position(s):
+					location.x += UnityEngine.Random.Range(-i, i);
+					location.z += UnityEngine.Random.Range(-i, i);
 				
 					if (r < this.spawnResourcePercent)
 						// Spawn a loose resource:
@@ -195,7 +200,7 @@ namespace Oxide.Plugins
 			serverProjectile.speed = UnityEngine.Random.Range(this.minLaunchVelocity, this.maxLaunchVelocity);
 			
 			entity.SendMessage("InitializeVelocity", (object) (launchDirection * 1.0f));
-			entity.Spawn(true);								
+			entity.Spawn(true);
 		}
 		
 		/**
