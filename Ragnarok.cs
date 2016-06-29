@@ -13,13 +13,11 @@ using Oxide.Core.Plugins;
  *
  * @author Drefetr
  * @author JShmitt
- * @version 0.7.0
- *
- * Todo: Min/max loot spawn variables; node & resource spawn types in pre-def arrays.
+ * @version 0.7.1
  */
 namespace Oxide.Plugins
 {
-    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.0", ResourceId = 31373)]
+    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.1", ResourceId = 0)]
     public class Ragnarok : RustPlugin
     {			
 		/**
@@ -64,6 +62,11 @@ namespace Oxide.Plugins
 		private int meteorFrequency = 5;
 		
 		/**
+		 * Maximum number of Meteors per cluster.
+		 */
+		private int maxClusterSize = 5;		
+		
+		/**
 		 * Percent chance of the Meteor dropping loose resources at the point of impact.
 		 */
 		private float spawnResourcePercent = 0.05f;
@@ -72,11 +75,6 @@ namespace Oxide.Plugins
 		 * Percent chance of the Meteor spawning a resource node at the point of impact.
 		 */
 		private float spawnResourceNodePercent = 1.0f;
-		
-		/**
-		 * Maximum size of a Meteor cluster.
-		 */
-		private int maxClusterSize = 5;
 	
 		/**
 		 * ServerTicks since OnServerInit().
@@ -87,11 +85,43 @@ namespace Oxide.Plugins
 		 * Server OnInit-bind; runs on server startup & mod. init.
 		 */
 		private void OnServerInitialized()
-		{	
+		{		
+			// Load configuration (& call LoadDefaultConfig if the file does 
+			// n't yet exist).
+			this.minLaunchAngle = Convert.ToSingle(Config["MinLaunchAngle"]);		
+			this.maxLaunchAngle = Convert.ToSingle(Config["MaxLaunchAngle"]);
+			this.minLaunchHeight = Convert.ToSingle(Config["MinLaunchHeight"]);
+			this.maxLaunchHeight = Convert.ToSingle(Config["MaxLaunchHeight"]);	
+			this.minLaunchVelocity = Convert.ToSingle(Config["MinLaunchVelocity"]);			
+			this.maxLaunchVelocity = Convert.ToSingle(Config["MaxLaunchVelocity"]);		
+			this.meteorFrequency = (int) Config["MeteorFrequency"];			
+			this.maxClusterSize = (int) Config["MaxClusterSize"];
+			this.spawnResourcePercent = Convert.ToSingle(Config["SpawnResourcePercent"]);
+			this.spawnResourceNodePercent = Convert.ToSingle(Config["SpawnResourceNodePercent"]);
+
 			// Ensure shitty weather; clouds & fog.
 			ConsoleSystem.Run.Server.Normal("weather.clouds 1");			
 			ConsoleSystem.Run.Server.Normal("weather.fog 1");
 		}	
+	
+        /**
+		 * Loads & creates a default configuration file (using the properties and 
+		 * values defined above).
+		 */
+        protected override void LoadDefaultConfig() {
+
+			Config.Set("MinLaunchAngle", this.minLaunchAngle);
+			Config.Set("MaxLaunchAngle", this.maxLaunchAngle);
+			Config.Set("MinLaunchHeight", this.minLaunchHeight);
+			Config.Set("MaxLaunchHeight", this.maxLaunchAngle);
+			Config.Set("MinLaunchVelocity", this.minLaunchVelocity);
+			Config.Set("MaxLaunchVelocity", this.maxLaunchVelocity);
+			Config.Set("MeteorFrequency", this.meteorFrequency);
+            Config.Set("MaxClusterSize", this.maxClusterSize);			
+			Config.Set("SpawnResourcePercent", this.spawnResourcePercent);
+			Config.Set("SpawnResourceNodePercent", this.spawnResourceNodePercent);
+			SaveConfig();
+        }
 	
 		/** 
 		 * Server OnTick-bind; runs once per server tick --
