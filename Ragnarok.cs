@@ -17,7 +17,7 @@ using Oxide.Core.Plugins;
  */
 namespace Oxide.Plugins
 {
-    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.3", ResourceId = 0)]
+    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.6", ResourceId = 1985)]
     public class Ragnarok : RustPlugin
     {			
 		/**
@@ -65,7 +65,7 @@ namespace Oxide.Plugins
 		/**
 		 * Maximum number of Meteors per cluster.
 		 */
-		private int maxClusterSize = 1;		
+		private int maxClusterSize = 5;		
 		
 		/**
 		 * Percent chance of the Meteor dropping loose resources at the point of impact.
@@ -113,7 +113,7 @@ namespace Oxide.Plugins
 			Config.Set("MinLaunchAngle", this.minLaunchAngle);
 			Config.Set("MaxLaunchAngle", this.maxLaunchAngle);
 			Config.Set("MinLaunchHeight", this.minLaunchHeight);
-			Config.Set("MaxLaunchHeight", this.maxLaunchAngle);
+			Config.Set("MaxLaunchHeight", this.maxLaunchHeight);
 			Config.Set("MinLaunchVelocity", this.minLaunchVelocity);
 			Config.Set("MaxLaunchVelocity", this.maxLaunchVelocity);
 			Config.Set("MeteorFrequency", this.meteorFrequency);

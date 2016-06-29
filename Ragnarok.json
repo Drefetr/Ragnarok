@@ -1,7 +1,7 @@
 {
-  "MaxClusterSize": 1,
+  "MaxClusterSize": 5,
   "MaxLaunchAngle": 0.5,
-  "MaxLaunchHeight": 0.5,
+  "MaxLaunchHeight": 250.0,
   "MaxLaunchVelocity": 75.0,
   "MeteorFrequency": 5,
   "MinLaunchAngle": 0.25,
