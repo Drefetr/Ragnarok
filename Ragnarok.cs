@@ -109,7 +109,6 @@ namespace Oxide.Plugins
 		 * values defined above).
 		 */
         protected override void LoadDefaultConfig() {
-
 			Config.Set("MinLaunchAngle", this.minLaunchAngle);
 			Config.Set("MaxLaunchAngle", this.maxLaunchAngle);
 			Config.Set("MinLaunchHeight", this.minLaunchHeight);
@@ -117,7 +116,7 @@ namespace Oxide.Plugins
 			Config.Set("MinLaunchVelocity", this.minLaunchVelocity);
 			Config.Set("MaxLaunchVelocity", this.maxLaunchVelocity);
 			Config.Set("MeteorFrequency", this.meteorFrequency);
-            Config.Set("MaxClusterSize", this.maxClusterSize);			
+			Config.Set("MaxClusterSize", this.maxClusterSize);			
 			Config.Set("SpawnResourcePercent", this.spawnResourcePercent);
 			Config.Set("SpawnResourceNodePercent", this.spawnResourceNodePercent);
 			SaveConfig();
