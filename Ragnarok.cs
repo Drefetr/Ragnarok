@@ -13,11 +13,11 @@ using Oxide.Core.Plugins;
  *
  * @author Drefetr
  * @author JShmitt
- * @version 0.7.1
+ * @version 0.7.7
  */
 namespace Oxide.Plugins
 {
-    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.6", ResourceId = 1985)]
+    [Info("Ragnarok", "Drefetr et Shmitt", "0.7.7", ResourceId = 1985)]
     public class Ragnarok : RustPlugin
     {			
 		/**
@@ -60,12 +60,22 @@ namespace Oxide.Plugins
 		/**
 		 * ServerTicks between Meteor(s).
 		 */
-		private int meteorFrequency = 5;
+		private int meteorFrequency = 10;
 		
 		/**
 		 * Maximum number of Meteors per cluster.
 		 */
-		private int maxClusterSize = 5;		
+		private int maxClusterSize = 5;
+
+		/**
+		 * The minimum range (+/- x, & +/- z) of a Meteor cluster.
+		 */
+		private int minClusterRange = 1;
+		
+		/**
+		 * The maximum range (+/- x, & +/- z) of a Meteor clutser.
+		 */
+		private int maxClusterRange = 5;
 		
 		/**
 		 * Percent chance of the Meteor dropping loose resources at the point of impact.
@@ -97,6 +107,8 @@ namespace Oxide.Plugins
 			this.maxLaunchVelocity = Convert.ToSingle(Config["MaxLaunchVelocity"]);		
 			this.meteorFrequency = (int) Config["MeteorFrequency"];			
 			this.maxClusterSize = (int) Config["MaxClusterSize"];
+			this.minClusterRange = (int) Config["MinClusterRange"];
+			this.maxClusterRange = (int) Config["MaxClusterRange"];
 			this.spawnResourcePercent = Convert.ToSingle(Config["SpawnResourcePercent"]);
 			this.spawnResourceNodePercent = Convert.ToSingle(Config["SpawnResourceNodePercent"]);
 
@@ -117,7 +129,9 @@ namespace Oxide.Plugins
 			Config.Set("MinLaunchVelocity", this.minLaunchVelocity);
 			Config.Set("MaxLaunchVelocity", this.maxLaunchVelocity);
 			Config.Set("MeteorFrequency", this.meteorFrequency);
-			Config.Set("MaxClusterSize", this.maxClusterSize);			
+			Config.Set("MaxClusterSize", this.maxClusterSize);		
+			Config.Set("MinClusterRange", this.minClusterRange);
+			Config.Set("MaxClusterRange", this.maxClusterRange);
 			Config.Set("SpawnResourcePercent", this.spawnResourcePercent);
 			Config.Set("SpawnResourceNodePercent", this.spawnResourceNodePercent);
 			SaveConfig();
@@ -139,8 +153,8 @@ namespace Oxide.Plugins
 					float r = UnityEngine.Random.Range(0.0f, 100.0f);
 					
 					// Add a (slight) degree of randomness to the launch position(s):
-					location.x += UnityEngine.Random.Range(-i, i);
-					location.z += UnityEngine.Random.Range(-i, i);
+					location.x += UnityEngine.Random.Range(this.minClusterRange, this.maxClusterRange);
+					location.z += UnityEngine.Random.Range(this.minClusterRange, this.maxClusterRange);
 				
 					if (r < this.spawnResourcePercent)
 						// Spawn a loose resource:
